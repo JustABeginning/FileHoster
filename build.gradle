@@ -1,0 +1,85 @@
+plugins {
+	id 'java'
+	id 'groovy'
+	id 'org.springframework.boot' version '3.5.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id("com.diffplug.spotless") version "7.0.2"
+}
+
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+/* Spotless Plugin Config */
+spotless {
+
+	format 'misc', {
+		// define the files to apply `misc` to
+		target '*.gradle', '.gitattributes', '.gitignore'
+
+		// define the steps to apply to those files
+		trimTrailingWhitespace()
+		leadingSpacesToTabs() // or leadingTabsToSpaces. Takes an integer argument if you don't like 4
+		endWithNewline()
+	}
+
+	groovyGradle {
+		target '*.gradle' // default target of groovyGradle
+		greclipse()
+	}
+
+	java {
+		// Use the default importOrder configuration
+		importOrder()
+
+		removeUnusedImports()
+
+		// Cleanthat will refactor your code, but it may break your style: apply it before your formatter
+		cleanthat()          // has its own section below
+
+		// Choose one of these formatters.
+		eclipse()            // has its own section below
+
+		formatAnnotations()  // fixes formatting of type annotations, see below
+
+		licenseHeader '/* (C) $YEAR */' // or licenseHeaderFile
+	}
+}
+
+afterEvaluate {
+	def spotless = tasks.named('spotlessApply')
+	if (spotless) {
+		tasks.withType(JavaCompile).configureEach {
+			finalizedBy(spotless)
+		}
+
+		tasks.withType(GroovyCompile).tap {
+			configureEach {
+				finalizedBy(spotless)
+			}
+		}
+	}
+}
+
+
+group = 'com.stackDev.application'
+version = '0.0.1-SNAPSHOT'
+description = 'Stack Dev'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// SQLite JDBC (Java Database Connectivity)
+	implementation 'org.xerial:sqlite-jdbc'
+	implementation 'org.hibernate.orm:hibernate-community-dialects'
+}
