@@ -13,6 +13,8 @@ public class FileHosterApplication {
 
 	public static final String API_ENDPOINT = "api.endPoint";
 
+	public static final String API_CORS_ORIGIN = "api.corsOrigin";
+
 	static {
 		System.setProperty("application.configFile", "classpath:/properties/config.properties");
 	}
@@ -21,26 +23,24 @@ public class FileHosterApplication {
 		if (args.length > 1) {
 
 			String apiKey;
-			int wait = 0;
+			int index = 0, wait = 0;
 
+			if (args.length > 3) {
+				StringBuilder builder = new StringBuilder();
+				while (index < args.length - 3)
+					builder.append(args[index++]).append(" ");
+				System.setProperty(API_CORS_ORIGIN, builder.toString().trim());
+			}
 			if (args.length > 2) {
-				System.setProperty(API_ENDPOINT, args[0]);
+				System.setProperty(API_ENDPOINT, args[index++]);
+			}
 
-				apiKey = args[1];
-				try {
-					wait = Integer.parseInt(args[2]);
+			apiKey = args[index++];
+			try {
+				wait = Integer.parseInt(args[index]);
 
-				} catch (NumberFormatException e) {
-					System.out.println("\n[-] Time (in min): " + args[2] + " MUST be a NUMBER !\n");
-				}
-			} else {
-				apiKey = args[0];
-				try {
-					wait = Integer.parseInt(args[1]);
-
-				} catch (NumberFormatException e) {
-					System.out.println("\n[-] Time (in min): " + args[1] + " MUST be a NUMBER !\n");
-				}
+			} catch (NumberFormatException e) {
+				System.out.println("\n[-] Time (in min): " + args[index] + " MUST be a NUMBER !\n");
 			}
 			//
 			SpringApplication.run(FileHosterApplication.class, args);

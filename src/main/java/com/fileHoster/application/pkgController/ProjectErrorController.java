@@ -27,7 +27,7 @@ public class ProjectErrorController implements ErrorController {
 
 			String format = "--> error-";
 
-			String stat = "\n[*]" + " " + request.getRemoteAddr() + " " + format + statusCode + "\n";
+			String stat = "\n[!]" + " " + request.getRemoteAddr() + " " + format + statusCode + "\n";
 
 			System.out.println(stat);
 

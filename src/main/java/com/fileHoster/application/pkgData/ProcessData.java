@@ -2,8 +2,8 @@
 package com.fileHoster.application.pkgData;
 
 import com.fileHoster.application.FileHosterApplication;
-import com.fileHoster.application.pkgConfig.ConfigClass;
-import com.fileHoster.application.pkgConfig.ConfigSet;
+import com.fileHoster.application.pkgConfig.pkgProperties.ConfigClass;
+import com.fileHoster.application.pkgConfig.pkgProperties.ConfigSet;
 import com.fileHoster.application.pkgStorage.FileSystemStorageService;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -61,6 +61,7 @@ public class ProcessData {
 		apiEndPoint = System.getProperty(FileHosterApplication.API_ENDPOINT, null);
 
 		if (apiEndPoint == null) {
+			System.setProperty(FileHosterApplication.API_ENDPOINT, globConfigSet.getApiEndPoint());
 			apiEndPoint = globConfigSet.getApiEndPoint();
 		}
 

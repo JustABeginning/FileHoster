@@ -1,5 +1,5 @@
 /* (C) 2025 */
-package com.fileHoster.application.pkgConfig;
+package com.fileHoster.application.pkgConfig.pkgProperties;
 
 public class ConfigSet {
 
@@ -10,6 +10,8 @@ public class ConfigSet {
 	private String keysDir;
 
 	private String keysFile;
+
+	private String apiCspNonce;
 
 	private String apiEndPoint;
 
@@ -43,6 +45,14 @@ public class ConfigSet {
 
 	public void setKeysFile(String keysFile) {
 		this.keysFile = keysFile;
+	}
+
+	public String getApiCspNonce() {
+		return apiCspNonce;
+	}
+
+	public void setApiCspNonce(String apiCspNonce) {
+		this.apiCspNonce = apiCspNonce;
 	}
 
 	public String getApiEndPoint() {

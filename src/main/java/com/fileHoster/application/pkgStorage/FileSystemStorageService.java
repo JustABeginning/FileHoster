@@ -1,8 +1,8 @@
 /* (C) 2025 */
 package com.fileHoster.application.pkgStorage;
 
-import com.fileHoster.application.pkgConfig.ConfigClass;
-import com.fileHoster.application.pkgConfig.ConfigSet;
+import com.fileHoster.application.pkgConfig.pkgProperties.ConfigClass;
+import com.fileHoster.application.pkgConfig.pkgProperties.ConfigSet;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

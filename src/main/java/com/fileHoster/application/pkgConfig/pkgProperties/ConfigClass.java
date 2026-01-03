@@ -1,5 +1,5 @@
 /* (C) 2025 */
-package com.fileHoster.application.pkgConfig;
+package com.fileHoster.application.pkgConfig.pkgProperties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +12,10 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 public class ConfigClass {
 
 	public static final String CONFIG_BEAN = "getConfigSet";
+	/* -- */
+	public static final String LOCALHOST = "127.0.0.1";
+	public static final String API_HOME = "/";
+	/* -- */
 
 	@Value("${config.defaultValue}")
 	private String defaultValue;
@@ -24,6 +28,9 @@ public class ConfigClass {
 
 	@Value("${storage.keysFile}")
 	private String keysFile;
+
+	@Value("${api.cspNonce}")
+	private String apiCspNonce;
 
 	@Value("${config.api}")
 	private String apiEndPoint;
@@ -40,6 +47,7 @@ public class ConfigClass {
 		configSet.setStorageDir(storageDir);
 		configSet.setKeysDir(keysDir);
 		configSet.setKeysFile(keysFile);
+		configSet.setApiCspNonce(apiCspNonce);
 		configSet.setApiEndPoint(apiEndPoint);
 		return configSet;
 	}

@@ -1,10 +1,12 @@
 /* (C) 2025 */
 package com.fileHoster.application.pkgDB.pkgControl;
 
+import com.fileHoster.application.pkgDB.pkgEntity.FileEntry;
 import com.fileHoster.application.pkgDB.pkgRepo.FileEntryRepository;
 import com.fileHoster.application.pkgData.ProcessData;
 import com.fileHoster.application.pkgRecord.Result;
 import com.fileHoster.application.pkgRecord.Status;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URLConnection;
@@ -13,6 +15,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,8 +34,11 @@ public class DBController {
 	@Value("${config.apiKey}")
 	private String apiKey;
 
-	@Value("${api.deleteFileName}")
-	private String apiDeleteFileName;
+	@Value("${api.fileName}")
+	private String apiFileName;
+
+	@Value("${api.newFileName}")
+	private String apiNewFileName;
 
 	private static FileEntryRepository globFileEntryRepository;
 
@@ -44,8 +51,10 @@ public class DBController {
 		DBController.globFileEntryRepository = globFileEntryRepository;
 	}
 
+	@PreAuthorize("#request.getRemoteAddr().equals(#request.getLocalAddr())")
 	@PostMapping("${api.getAllFiles}")
-	public @ResponseBody Result getEntryList(@RequestBody Map<String, Object> body) {
+	public @ResponseBody Result getEntryList(@RequestBody Map<String, Object> body,
+			@Param("request") HttpServletRequest request) {
 		if (body.containsKey(apiKey)) {
 			String apiKeyVal = String.valueOf(body.get(apiKey));
 			if (ProcessData.compareAPIKey(apiKeyVal)) {
@@ -67,12 +76,37 @@ public class DBController {
 		return new Result(defaultValue);
 	}
 
-	@PostMapping("${api.deleteFile}")
-	public @ResponseBody Status deleteEntry(@RequestBody Map<String, Object> body) {
-		if (body.containsKey(apiKey) && body.containsKey(apiDeleteFileName)) {
+	@PreAuthorize("#request.getRemoteAddr().equals(#request.getLocalAddr())")
+	@PostMapping("${api.renameFile}")
+	public @ResponseBody Status renameEntry(@RequestBody Map<String, Object> body,
+			@Param("request") HttpServletRequest request) {
+		if (body.containsKey(apiKey) && body.containsKey(apiFileName) && body.containsKey(apiNewFileName)) {
 			String apiKeyVal = String.valueOf(body.get(apiKey));
 			if (ProcessData.compareAPIKey(apiKeyVal)) {
-				String apiDeleteFileNameVal = String.valueOf(body.get(apiDeleteFileName));
+				String apiRenameFileNameVal = String.valueOf(body.get(apiFileName));
+				String apiNewFileNameVal = String.valueOf(body.get(apiNewFileName));
+				if (globFileEntryRepository.findById(apiRenameFileNameVal).isPresent()) {
+					byte[] fileBytes = globFileEntryRepository.findById(apiRenameFileNameVal).get().getEntryFileBytes();
+					globFileEntryRepository.deleteById(apiRenameFileNameVal);
+					FileEntry fileEntry = new FileEntry();
+					fileEntry.setEntryID(apiNewFileNameVal);
+					fileEntry.setEntryFileBytes(fileBytes);
+					globFileEntryRepository.save(fileEntry);
+					return new Status(1);
+				}
+			}
+		}
+		return new Status(0);
+	}
+
+	@PreAuthorize("#request.getRemoteAddr().equals(#request.getLocalAddr())")
+	@PostMapping("${api.deleteFile}")
+	public @ResponseBody Status deleteEntry(@RequestBody Map<String, Object> body,
+			@Param("request") HttpServletRequest request) {
+		if (body.containsKey(apiKey) && body.containsKey(apiFileName)) {
+			String apiKeyVal = String.valueOf(body.get(apiKey));
+			if (ProcessData.compareAPIKey(apiKeyVal)) {
+				String apiDeleteFileNameVal = String.valueOf(body.get(apiFileName));
 				if (globFileEntryRepository.existsById(apiDeleteFileNameVal)) {
 					globFileEntryRepository.deleteById(apiDeleteFileNameVal);
 					return new Status(1);
@@ -82,8 +116,10 @@ public class DBController {
 		return new Status(0);
 	}
 
+	@PreAuthorize("#request.getRemoteAddr().equals(#request.getLocalAddr())")
 	@PostMapping("${api.deleteAllFiles}")
-	public @ResponseBody Status deleteEntryList(@RequestBody Map<String, Object> body) {
+	public @ResponseBody Status deleteEntryList(@RequestBody Map<String, Object> body,
+			@Param("request") HttpServletRequest request) {
 		if (body.containsKey(apiKey)) {
 			String apiKeyVal = String.valueOf(body.get(apiKey));
 			if (ProcessData.compareAPIKey(apiKeyVal)) {
