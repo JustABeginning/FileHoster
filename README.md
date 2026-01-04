@@ -42,11 +42,13 @@ A Simple Spring Boot Application to Host Files
 
 # Description
 
-- Host your files securely from your local machine and, make them shareable within the same subnet or, across it via port-forwarding
+- Host files securely from your local machine and, make them shareable within the same subnet or, across it via port-forwarding
 
 - By default, the application is hosted at `http://127.0.0.1:80/`
 
 - Form to submit file(s) is available at the root mapping `/`, access to the same is made selective for better privacy
+
+- Retrieve a saved file via `GET /<FILE_NAME>`
 
 - API endpoints to manage saved file(s) are available at the following mappings:
   - `POST /<API_ENDPOINT>/getAllFiles`
@@ -54,7 +56,7 @@ A Simple Spring Boot Application to Host Files
     ```console
 
     {
-      "apiKey": <API_KEY>
+      "apiKey": "<API_KEY>"
     }
 
     ```
@@ -64,9 +66,9 @@ A Simple Spring Boot Application to Host Files
     ```console
 
     {
-      "apiKey": <API_KEY>,
-      "fileName": <FILE_NAME>,
-      "newFileName": <NEW_FILE_NAME>
+      "apiKey": "<API_KEY>",
+      "fileName": "<FILE_NAME>",
+      "newFileName": "<NEW_FILE_NAME>"
     }
 
     ```
@@ -76,8 +78,8 @@ A Simple Spring Boot Application to Host Files
     ```console
 
     {
-      "apiKey": <API_KEY>,
-      "fileName": <FILE_NAME>
+      "apiKey": "<API_KEY>",
+      "fileName": "<FILE_NAME>"
     }
 
     ```
@@ -87,9 +89,21 @@ A Simple Spring Boot Application to Host Files
     ```console
 
     {
-      "apiKey": <API_KEY>
+      "apiKey": "<API_KEY>"
     }
 
     ```
 
   - **Note:** Access to these endpoints have been made selective for better privacy
+
+# References
+
+- [Getting Started | Handling Form Submission - Spring](https://spring.io/guides/gs/handling-form-submission)
+
+- [Getting Started | Uploading Files - Spring](https://spring.io/guides/gs/uploading-files)
+
+- [Integrate SQLite with Spring Boot](https://www.blackslate.io/articles/integrate-sqlite-with-spring-boot)
+
+- [Content-Security-Policy Nonce with Spring Security](https://techblog.bozho.net/content-security-policy-nonce-with-spring-security/)
+
+- [Spring MVC - allowing requests from localhost only to specific controller](https://stackoverflow.com/questions/23238876/spring-mvc-allowing-requests-from-localhost-only-to-specific-controller)

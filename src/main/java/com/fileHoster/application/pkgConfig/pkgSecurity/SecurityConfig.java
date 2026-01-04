@@ -89,9 +89,10 @@ public class SecurityConfig {
 					String[] mappings = getCORSMappings();
 					String[] allowedCorsOrigins;
 					String tmpAllowedCorsOrigins = System.getProperty(FileHosterApplication.API_CORS_ORIGIN, null);
-					if (tmpAllowedCorsOrigins == null)
+					if (tmpAllowedCorsOrigins == null) {
+						System.setProperty(FileHosterApplication.API_CORS_ORIGIN, SecurityConfig.allowedCorsOrigin);
 						allowedCorsOrigins = new String[]{SecurityConfig.allowedCorsOrigin};
-					else
+					} else
 						allowedCorsOrigins = tmpAllowedCorsOrigins.split(" ");
 					for (String mapping : mappings)
 						registry.addMapping(mapping).allowedOrigins(allowedCorsOrigins)
