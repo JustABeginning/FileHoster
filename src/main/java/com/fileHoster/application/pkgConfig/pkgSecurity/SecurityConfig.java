@@ -41,6 +41,7 @@ public class SecurityConfig {
 	private static final int CSRF_IGNORED_MAPPINGS_NUM = 4;
 	private static final String MAPPINGS_JOIN = "/";
 	private static final int CORS_MAPPINGS_NUM = 1;
+	private static final String[] ALLOWED_CORS_METHODS = {"GET", "POST"};
 	/* -- */
 
 	private static String allowedCorsOrigin;
@@ -93,7 +94,8 @@ public class SecurityConfig {
 					else
 						allowedCorsOrigins = tmpAllowedCorsOrigins.split(" ");
 					for (String mapping : mappings)
-						registry.addMapping(mapping).allowedOrigins(allowedCorsOrigins).allowedMethods("GET", "POST");
+						registry.addMapping(mapping).allowedOrigins(allowedCorsOrigins)
+								.allowedMethods(ALLOWED_CORS_METHODS);
 					System.out.println("\n[+] Configured CORS For:\n\n" + Arrays.toString(mappings)
 							+ "\n\n[*] With ORIGIN(s):\n\n" + Arrays.toString(allowedCorsOrigins) + "\n");
 				}

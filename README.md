@@ -1,2 +1,95 @@
 # FileHoster
+
 A Simple Spring Boot Application to Host Files
+
+# Usage
+
+- With CORS (Cross-Origin Resource Sharing)
+
+  ```console
+
+  foo@bar:~$ java -jar <BUILT_JAR>.jar <CORS_ORIGIN(s)...(space separated)> <API_ENDPOINT> <API_KEY> <TIME (in min)>
+
+  ```
+
+- With only `API_ENDPOINT`
+
+  ```console
+
+  foo@bar:~$ java -jar <BUILT_JAR>.jar <API_ENDPOINT> <API_KEY> <TIME (in min)>
+
+  ```
+
+- **Minimal Requirement:** With only `API_KEY`
+
+  ```console
+
+  foo@bar:~$ java -jar <BUILT_JAR>.jar <API_KEY> <TIME (in min)>
+
+  ```
+
+- **Note:** Path to `<BUILT_JAR>.jar` is `build/libs/<FILE_HOSTER>-SNAPSHOT.jar`
+
+# Features
+
+- Variable `CORS_ORIGIN(s)`, `API_ENDPOINT` (default `/api`) and, `API_KEY` (output path: `/storage/keys/keyFile.log`) rolling with `TIME (in min)`
+
+- Strict and concise `Content-Security-Policy` with implementation of `nonce` for both `<script>` and, `<style>` tags
+
+- Selective access to API (Application Programming Interface) endpoints with Spring Security
+
+- Form rendering and, validation with Thymeleaf
+
+# Description
+
+- Host your files securely from your local machine and, make them shareable within the same subnet or, across it via port-forwarding
+
+- By default, the application is hosted at `http://127.0.0.1:80/`
+
+- Form to submit file(s) is available at the root mapping `/`, access to the same is made selective for better privacy
+
+- API endpoints to manage saved file(s) are available at the following mappings:
+  - `POST /<API_ENDPOINT>/getAllFiles`
+
+    ```console
+
+    {
+      "apiKey": <API_KEY>
+    }
+
+    ```
+
+  - `POST /<API_ENDPOINT>/renameFile`
+
+    ```console
+
+    {
+      "apiKey": <API_KEY>,
+      "fileName": <FILE_NAME>,
+      "newFileName": <NEW_FILE_NAME>
+    }
+
+    ```
+
+  - `POST /<API_ENDPOINT>/deleteFile`
+
+    ```console
+
+    {
+      "apiKey": <API_KEY>,
+      "fileName": <FILE_NAME>
+    }
+
+    ```
+
+  - `POST /<API_ENDPOINT>/deleteAllFiles`
+
+    ```console
+
+    {
+      "apiKey": <API_KEY>
+    }
+
+    ```
+
+  - **Note:** Access to these endpoints have been made selective for better privacy
