@@ -32,7 +32,7 @@ A Simple Spring Boot Application to Host Files
 
 # Features
 
-- Variable `CORS_ORIGIN(s)`, `API_ENDPOINT` (default `/api`) and, `API_KEY` (output path: `/storage/keys/keyFile.log`) rolling with `TIME (in min)`
+- Variable `CORS_ORIGIN(s)`, `API_ENDPOINT` (default `/api`) and, `API_KEY` (rolling with `TIME (in min)`, output path: `/storage/keys/keyFile.log`)
 
 - Strict and concise `Content-Security-Policy` with implementation of `nonce` for both `<script>` and, `<style>` tags
 
@@ -101,6 +101,8 @@ A Simple Spring Boot Application to Host Files
 - [Getting Started | Handling Form Submission - Spring](https://spring.io/guides/gs/handling-form-submission)
 
 - [Getting Started | Uploading Files - Spring](https://spring.io/guides/gs/uploading-files)
+
+- [Spring Boot Thymeleaf Form Data Validation with Bean Validator](https://stackabuse.com/spring-boot-thymeleaf-form-data-validation-with-bean-validator/)
 
 - [Integrate SQLite with Spring Boot](https://www.blackslate.io/articles/integrate-sqlite-with-spring-boot)
 
